@@ -81,4 +81,147 @@
     }
     .btn:hover { transform: scale(1.05); }
     .btn-primary {
-      background: linear-gradient(1
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: white;
+      box-shadow: 0 4px 20px rgba(255,77,121,0.5);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    #music-bar {
+      position: fixed;
+      top: 1rem; right: 1rem;
+      z-index: 100;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .music-wave { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+    .music-wave span {
+      width: 3px; background: var(--pink); border-radius: 2px;
+      animation: wave 0.8s ease-in-out infinite alternate;
+    }
+    .music-wave span:nth-child(1) { height: 7px; }
+    .music-wave span:nth-child(2) { animation-delay: 0.15s; height: 10px; }
+    .music-wave span:nth-child(3) { animation-delay: 0.3s; height: 14px; }
+    @keyframes wave { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+    .music-wave.paused span { animation-play-state: paused; }
+    section { padding: 5rem 1.5rem; }
+    .section-title { text-align: center; font-family: 'Pacifico', cursive; font-size: clamp(1.8rem, 5vw, 2.8rem); margin-bottom: 0.5rem; }
+    .section-sub { text-align: center; color: rgba(255,255,255,0.55); margin-bottom: 3rem; }
+    #slideshow-section { background: #0c050d; }
+    .slideshow-wrapper { max-width: 800px; margin: 0 auto; }
+    .slideshow-frame {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: #1a0f1f;
+      box-shadow: 0 20px 60px rgba(255,77,121,0.25);
+    }
+    .slideshow-frame img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s ease; }
+    .slide-counter { position: absolute; bottom: 1rem; right: 1rem; background: rgba(0,0,0,0.6); color: white; padding: 0.3rem 0.9rem; border-radius: 50px; font-size: 0.85rem; }
+    .slide-progress { margin-top: 1rem; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+    .slide-progress-bar { height: 100%; background: linear-gradient(90deg, var(--pink), var(--purple)); width: 0%; }
+    .slideshow-controls { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+    .slide-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.6rem 1.4rem; border-radius: 50px; cursor: pointer; }
+    .play-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); border: none; }
+    #gallery { background: #150a17; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; }
+    .gallery-item { border-radius: 16px; overflow: hidden; aspect-ratio: 1; position: relative; cursor: pointer; background: #1e1124; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    #lightbox { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; }
+    #lightbox.active { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 16px; }
+    #lightbox-close { position: absolute; top: 1.2rem; right: 1.5rem; font-size: 2rem; cursor: pointer; }
+    #lightbox-prev, #lightbox-next { position: absolute; top: 50%; background: rgba(255,255,255,0.15); border: none; color: white; font-size: 1.5rem; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; }
+    #lightbox-prev { left: 1rem; } #lightbox-next { right: 1rem; }
+    #wishes { background: #120813; }
+    .wishes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+    .wish-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 1.5rem; position: relative; }
+    .wish-card .quote { font-size: 2.5rem; }
+    .wish-card .message { font-size: 0.95rem; margin-bottom: 1rem; color: rgba(255,255,255,0.85); }
+    .wish-card .from { font-size: 0.8rem; font-weight: 700; color: var(--blue); text-transform: uppercase; }
+    footer { text-align: center; padding: 3rem 1.5rem; background: #09030a; color: rgba(255,255,255,0.4); }
+    .floater { position: fixed; pointer-events: none; font-size: 1.5rem; z-index: 0; animation: floatUp 6s ease-in infinite; opacity: 0; }
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+      10% { opacity: 0.6; } 100% { opacity: 0; transform: translateY(-10vh) rotate(360deg); }
+    }
+    @media(max-width: 500px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+  </style>
+</head>
+<body>
+
+<audio id="music" loop>
+  <source src="songg.mp3" type="audio/mpeg">
+</audio>
+
+<div id="music-bar" onclick="toggleMusic()">
+  <span>🎵</span>
+  <div class="music-wave paused" id="wave"><span></span><span></span><span></span></div>
+  <span id="music-label">Play Music</span>
+</div>
+
+<section id="hero">
+  <img id="bg-slideshow" src="IMG_3104.jpg" alt="Anniversary bg">
+  <div class="hero-content">
+    <div class="birthday-tag">💍 Happy Anniversary! 💍</div>
+    <h1 class="hero-name">Happy Anniversary<br>Nainitha Reddy!</h1>
+    <p class="hero-sub">To my beautiful future wife — my today, my tomorrow, and my forever! ❤️</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" onclick="shootConfetti()">✨ Celebrate Love!</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('slideshow-section').scrollIntoView({behavior:'smooth'})">🎞️ Memories</button>
+    </div>
+  </div>
+</section>
+
+<section id="slideshow-section">
+  <h2 class="section-title" style="color:var(--blue);">🎞️ Memory Slideshow</h2>
+  <p class="section-sub">Reliving every beautiful chapter with you</p>
+  <div class="slideshow-wrapper">
+    <div class="slideshow-frame" id="slideshow-container"></div>
+    <div class="slide-progress"><div class="slide-progress-bar" id="progress-bar"></div></div>
+    <div class="slideshow-controls">
+      <button class="slide-btn" onclick="prevSlide()">&#8592; Prev</button>
+      <button class="slide-btn play-btn" id="play-btn" onclick="toggleSlideshow()">⏸ Pause</button>
+      <button class="slide-btn" onclick="nextSlide()">Next &#8594;</button>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <h2 class="section-title" style="color:var(--yellow)">📸 Memory Lane</h2>
+  <p class="section-sub">Every beautiful moment we've shared so far!</p>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<div id="lightbox">
+  <span id="lightbox-close">✕</span>
+  <button id="lightbox-prev">&#8592;</button>
+  <div id="lightbox-content"></div>
+  <button id="lightbox-next">&#8594;</button>
+</div>
+
+<section id="wishes">
+  <h2 class="section-title" style="color:var(--pink)">💌 Love Letters</h2>
+  <p class="section-sub">A couple of notes straight from the heart</p>
+  <div class="wishes-grid" id="wishes-grid"></div>
+</section>
+
+<footer>
+  <p>Made with ❤️ for my beautiful future wife, <strong>Nainitha Reddy</strong>. Cheers to forever! 🥂</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
