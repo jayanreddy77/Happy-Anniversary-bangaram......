@@ -1,11 +1,11 @@
 const allMedia = [
-  { type: 'image', src: 'IMG_3104.jpg' },
   { type: 'image', src: 'IMG_0175.jpg' },
   { type: 'image', src: 'IMG_0193.jpg' },
   { type: 'image', src: 'IMG_1499.jpg' },
   { type: 'image', src: 'IMG_1697.jpg' },
   { type: 'image', src: 'IMG_2055.jpg' },
   { type: 'image', src: 'IMG_2962.jpg' },
+  { type: 'image', src: 'IMG_3104.jpg' },
   { type: 'image', src: 'IMG_3108.jpg' },
   { type: 'image', src: 'IMG_3393.jpg' },
   { type: 'image', src: 'IMG_5058.jpg' },
@@ -17,8 +17,7 @@ const allMedia = [
   { type: 'image', src: 'IMG_7399.jpg' },
   { type: 'image', src: 'IMG_9093.jpg' },
   { type: 'image', src: 'IMG_9140.jpg' },
-  { type: 'image', src: 'IMG_9146.jpg' },
-  
+  { type: 'image', src: 'IMG_9146.jpg' }
 ];
 
 const total = allMedia.length;
@@ -94,10 +93,6 @@ function goToSlide(idx) {
       const img = document.createElement('img');
       img.src = current.src;
       slideshowContainer.appendChild(img);
-    } else {
-      const vid = document.createElement('video');
-      vid.src = current.src; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true;
-      slideshowContainer.appendChild(vid);
     }
     slideshowContainer.style.opacity = 1;
   }, 300);
@@ -120,13 +115,7 @@ if(grid) {
   allMedia.forEach((media, i) => {
     const item = document.createElement('div');
     item.className = 'gallery-item';
-    if (media.type === 'image') {
-      item.innerHTML = `<img src="${media.src}" alt="Memory" loading="lazy">`;
-    } else {
-      item.innerHTML = `<video src="${media.src}" muted loop playsinline></video><div class="video-badge">▶ Video</div>`;
-      item.addEventListener('mouseenter', () => item.querySelector('video').play().catch(() => {}));
-      item.addEventListener('mouseleave', () => item.querySelector('video').pause());
-    }
+    item.innerHTML = `<img src="${media.src}" alt="Memory" loading="lazy">`;
     item.onclick = () => openLightbox(i);
     grid.appendChild(item);
   });
@@ -139,11 +128,7 @@ function openLightbox(idx) {
   currentLightboxIdx = idx;
   const media = allMedia[idx];
   lightboxContent.innerHTML = '';
-  if (media.type === 'image') {
-    const img = document.createElement('img'); img.src = media.src; lightboxContent.appendChild(img);
-  } else {
-    const vid = document.createElement('video'); vid.src = media.src; vid.controls = true; vid.autoplay = true; lightboxContent.appendChild(vid);
-  }
+  const img = document.createElement('img'); img.src = media.src; lightboxContent.appendChild(img);
   document.getElementById('lightbox').classList.add('active');
 }
 
