@@ -18,8 +18,7 @@ const allMedia = [
   { type: 'image', src: 'IMG_9093.jpg' },
   { type: 'image', src: 'IMG_9140.jpg' },
   { type: 'image', src: 'IMG_9146.jpg' },
-  { type: 'video', src: 'IMG_2964.mp4' },
-  { type: 'video', src: 'IMG_0177.mp4' }
+  
 ];
 
 const total = allMedia.length;
