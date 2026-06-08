@@ -25,6 +25,7 @@ let musicPlaying = false;
 const music = document.getElementById('music');
 
 function toggleMusic() {
+  if (!music) return;
   if (musicPlaying) {
     music.pause(); musicPlaying = false;
     document.getElementById('music-label').textContent = 'Play Music';
@@ -38,6 +39,7 @@ function toggleMusic() {
 }
 
 window.addEventListener('click', () => {
+  if (!music) return;
   if (!musicPlaying) {
     music.play().then(() => {
       musicPlaying = true;
@@ -50,9 +52,10 @@ window.addEventListener('click', () => {
 const imageOnlyAssets = allMedia.filter(m => m.type === 'image');
 let bgIdx = 0;
 setInterval(() => {
+  if (imageOnlyAssets.length === 0) return;
   bgIdx = (bgIdx + 1) % imageOnlyAssets.length;
   const bgSlide = document.getElementById('bg-slideshow');
-  if(bgSlide) {
+  if (bgSlide) {
     bgSlide.style.opacity = 0;
     setTimeout(() => { bgSlide.src = imageOnlyAssets[bgIdx].src; bgSlide.style.opacity = 1; }, 400);
   }
@@ -66,7 +69,7 @@ const slideshowContainer = document.getElementById('slideshow-container');
 const progressBar = document.getElementById('progress-bar');
 
 function animateProgress() {
-  if(!progressBar) return;
+  if (!progressBar) return;
   progressBar.style.transition = 'none';
   progressBar.style.width = '0%';
   requestAnimationFrame(() => {
@@ -78,7 +81,7 @@ function animateProgress() {
 }
 
 function goToSlide(idx) {
-  if(!slideshowContainer) return;
+  if (!slideshowContainer || total === 0) return;
   mainIdx = (idx + total) % total;
   slideshowContainer.style.opacity = 0;
   setTimeout(() => {
@@ -106,12 +109,12 @@ function startTimer() { clearInterval(slideshowTimer); slideshowTimer = setInter
 function toggleSlideshow() {
   slideshowPlaying = !slideshowPlaying;
   const btn = document.getElementById('play-btn');
-  if (slideshowPlaying) { startTimer(); animateProgress(); if(btn) btn.textContent = '⏸ Pause'; }
-  else { clearInterval(slideshowTimer); if(progressBar) progressBar.style.width = '0%'; if(btn) btn.textContent = '▶ Play'; }
+  if (slideshowPlaying) { startTimer(); animateProgress(); if (btn) btn.textContent = '⏸ Pause'; }
+  else { clearInterval(slideshowTimer); if (progressBar) progressBar.style.width = '0%'; if (btn) btn.textContent = '▶ Play'; }
 }
 
 const grid = document.getElementById('gallery-grid');
-if(grid) {
+if (grid) {
   allMedia.forEach((media, i) => {
     const item = document.createElement('div');
     item.className = 'gallery-item';
@@ -124,7 +127,7 @@ if(grid) {
 let currentLightboxIdx = 0;
 const lightboxContent = document.getElementById('lightbox-content');
 function openLightbox(idx) {
-  if(!lightboxContent) return;
+  if (!lightboxContent || total === 0) return;
   currentLightboxIdx = idx;
   const media = allMedia[idx];
   lightboxContent.innerHTML = '';
@@ -134,13 +137,13 @@ function openLightbox(idx) {
 
 function closeLightbox() { 
   const lb = document.getElementById('lightbox');
-  if(lb) lb.classList.remove('active'); 
-  if(lightboxContent) lightboxContent.innerHTML = ''; 
+  if (lb) lb.classList.remove('active'); 
+  if (lightboxContent) lightboxContent.innerHTML = ''; 
 }
 
-if(document.getElementById('lightbox-close')) document.getElementById('lightbox-close').onclick = closeLightbox;
-if(document.getElementById('lightbox-prev')) document.getElementById('lightbox-prev').onclick = () => { currentLightboxIdx = (currentLightboxIdx - 1 + total) % total; openLightbox(currentLightboxIdx); };
-if(document.getElementById('lightbox-next')) document.getElementById('lightbox-next').onclick = () => { currentLightboxIdx = (currentLightboxIdx + 1) % total; openLightbox(currentLightboxIdx); };
+if (document.getElementById('lightbox-close')) document.getElementById('lightbox-close').onclick = closeLightbox;
+if (document.getElementById('lightbox-prev')) document.getElementById('lightbox-prev').onclick = () => { currentLightboxIdx = (currentLightboxIdx - 1 + total) % total; openLightbox(currentLightboxIdx); };
+if (document.getElementById('lightbox-next')) document.getElementById('lightbox-next').onclick = () => { currentLightboxIdx = (currentLightboxIdx + 1) % total; openLightbox(currentLightboxIdx); };
 
 const defaultWishes = [
   { from: 'Your Future Husband', msg: 'To my gorgeous future wife, Nainitha—thank you for making every day feel like a celebration. I look forward to spending all my tomorrows loving you.', color: '#ff4d79', quote: '💖' },
@@ -149,7 +152,7 @@ const defaultWishes = [
 ];
 
 const wishesGrid = document.getElementById('wishes-grid');
-if(wishesGrid) {
+if (wishesGrid) {
   defaultWishes.forEach(({ from, msg, color, quote }) => {
     const card = document.createElement('div');
     card.className = 'wish-card';
@@ -159,10 +162,14 @@ if(wishesGrid) {
 }
 
 function shootConfetti() {
-  if(typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+  if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 }
 
-window.onload = () => { goToSlide(0); startTimer(); shootConfetti(); };
+window.onload = () => { 
+  goToSlide(0); 
+  startTimer(); 
+  shootConfetti(); 
+};
 
 const emojis = ['💖','💍','✨','❤️','💕'];
 setInterval(() => {
